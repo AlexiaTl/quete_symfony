@@ -32,10 +32,10 @@ class BlogController extends AbstractController
 
 
     /**
-     * @Route("/show/{slug<^[a-z0-9-]+$>}", defaults={"slug"="Article Sans Titre"}, name="show")
+     * @Route("/show/{slug<^[a-z0-9-]+$>?Article Sans Titre}", name="show")
      */
     public function show($slug){
-        $slug = preg_replace("/-/"," ", ucwords(trim(strip_tags($slug)), "-"));
+        $slug = ucwords(preg_replace("/-/"," ",$slug));
         return $this->render('blog/show.html.twig', ['slug' => $slug]);
     }
 }
