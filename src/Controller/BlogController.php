@@ -5,25 +5,38 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Article;
 
-/**
- * @Route("/blog", name="blog_")
- */
+
 class BlogController extends AbstractController
 {
     /**
+     * Show all row from article's entity
+     *
      * @Route("/", name="index")
-    */
-    public function index()
+     * @return Response A response instance
+     */
+    public function index(): Response
     {
-        return $this->render('blog/index.html.twig', [
-            'owner' => 'Alexia',
-        ]);
+        $articles = $this->getDoctrine()
+            ->getRepository(Article::class)
+            ->findAll();
+
+        if (!$articles) {
+            throw $this->createNotFoundException(
+            'No article found in article\'s table.'
+            );
+        }
+
+        return $this->render(
+                'blog/index.html.twig',
+                ['articles' => $articles]
+        );
     }
 
-
     /**
-     * @Route("/list/{page<\d+>?1}", name="list")
+     * @Route("/blog/list/{page<\d+>?1}", name="blog_list")
      */
     public function list($page)
     {
@@ -32,7 +45,7 @@ class BlogController extends AbstractController
 
 
     /**
-     * @Route("/show/{slug<^[a-z0-9-]+$>?Article Sans Titre}", name="show")
+     * @Route("/blog/show/{slug<^[a-z0-9-]+$>?Article Sans Titre}", name="blog_show")
      */
     public function show($slug){
         $slug = ucwords(preg_replace("/-/"," ",$slug));
