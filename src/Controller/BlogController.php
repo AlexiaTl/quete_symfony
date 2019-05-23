@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Article;
+use App\Entity\Category;
 
 
 class BlogController extends AbstractController
@@ -36,19 +37,50 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/blog/list/{page<\d+>?1}", name="blog_list")
+     * @Route("/blog/show/", name="blog_list")
      */
-    public function list($page)
+    public function Default()
     {
-        return $this->render('blog/list.html.twig', ['page' => $page]);
+        return $this->render('blog/list.html.twig');
     }
-
 
     /**
      * @Route("/blog/show/{slug<^[a-z0-9-]+$>?Article Sans Titre}", name="blog_show")
      */
+    // redirection vers la page blog show
     public function show($slug){
         $slug = ucwords(preg_replace("/-/"," ",$slug));
         return $this->render('blog/show.html.twig', ['slug' => $slug]);
     }
+
+
+    /**
+     * @param string $categoryName
+     * @return Response
+     * @Route("/blog/showcategory/{categoryName}", name="show_category")
+     */
+    public function showByCategory(string $categoryName)
+    {
+        $category = $this->getDoctrine()->getRepository(Category::class)
+            ->findOneBy(['name'=>$categoryName]);
+        $articles = $this->getDoctrine()->getRepository(Article::class)
+            ->findBy(['category'=>$category->getId()], ['id'=>'DESC'], 3);
+        return $this->render('blog/category.html.twig', ['articles' => $articles, 'category' => $categoryName]);
+    }
+
+    
+    /**
+     * @Route("/blog/error/{slug}",
+     * requirements={"slug"="[A-Z]+"},
+     * defaults={"slug"="UPPER-CASE-NOT-ALLOWED"},
+     * name="error")
+     */
+    public function error($slug)
+    {
+        // redirection vers la page erreur, correspondant à l'insertion de majuscule dans l'URL
+        return $this->render('blog/error_404.html.twig', ['slug' => $slug]);
+    }
+
+
+
 }
