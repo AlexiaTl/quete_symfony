@@ -27,23 +27,28 @@ class Category
      * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="category")
      */
     private $articles;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
     }
+
     public function getId(): ?int
     {
         return $this->id;
     }
+    
     public function getName(): ?string
     {
         return $this->name;
     }
+    
     public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
     }
+
     /**
      * @return Collection|Article[]
      */
@@ -51,6 +56,11 @@ class Category
     {
         return $this->articles;
     }
+
+    /**
+     * param Article $article
+     * @return Category
+     */
     public function addArticle(Article $article): self
     {
         if (!$this->articles->contains($article)) {
@@ -59,6 +69,11 @@ class Category
         }
         return $this;
     }
+    
+    /**
+     * @param Article $article
+     * @return Category
+     */
     public function removeArticle(Article $article): self
     {
         if ($this->articles->contains($article)) {
