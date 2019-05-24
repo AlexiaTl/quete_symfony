@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+        <div>
+            <h1>3 derniers articles de la Categorie "{{ category.name }}"</h1>
+                {% for article in articles %}
+                    <h2>Article : {{ article.id }} {{ article.title }}</h2>
+                    <p>{{ article.content }}</p>
+            {% endfor %}
+        </div>
+    <a href="{{ path('app_index') }}">
+        Back to homepage.
+    </a>
+{% endblock %}

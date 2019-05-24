@@ -6,14 +6,14 @@
 
 {% block body %}
 
-<div>
-    <h1>Article's title : {{ article.title }}</h1>
-    <h2>Category : {{ article.category.name }}</h2>
-    <p>{{ article.content }}</p>
-</div>
+    <div>
+        <h1>Real article s title : {{ article.title }}</h1>
+        <h2>Category : {{ article.category.name }}</h2>
+        <p>{{ article.content }}</p>
+    </div>
 
-<a href="{{ path('app_index') }}">
-    Back to homepage.
-</a>
+    <a href="{{ path('app_index') }}">
+        Back to homepage.
+    </a>
 
 {% endblock %}
