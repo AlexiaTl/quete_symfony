@@ -14,7 +14,7 @@ class BlogController extends AbstractController
     /**
      * Show all row from article's entity
      *
-     * @Route("/blog/show", name="index")
+     * @Route("/blog", name="blog_index")
      * @return Response A response instance
      */
     public function index(): Response
@@ -28,7 +28,7 @@ class BlogController extends AbstractController
             );
         }
         return $this->render(
-            'blog/show.html.twig',
+            'blog/index.html.twig',
             ['articles' => $articles]
         );
     }
